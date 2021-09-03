@@ -1,0 +1,160 @@
+<!doctype html>
+<title>suicide rates overview 1985 to 2016</title>
+
+<head>
+    <style>
+        img {
+            width: 100%;
+        }
+    </style>
+    <style>
+        .button {
+            background-color: white;
+            color: black;
+            border: 2px solid #555555;
+
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            text-align: center;
+            -webkit-transition-duration: 0.4s;
+            /* Safari */
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #555555;
+            color: white;
+        }
+    </style>
+
+
+    <!-- CSS goes in the document HEAD or added to your external stylesheet -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+    <style type="text/css">
+        table.gridtable {
+            font-family: verdana, arial, sans-serif;
+            font-size: 11px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+        }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+
+<script>
+    function filterNonNumerical() {
+        var x = prompt("Contains");
+        if (x != null && x != "") {
+            window.location.href = "/filterOnCountry/" + x;
+        }
+    }
+</script>
+
+<script>
+    function filterNumerical(attribute) {
+        var x = prompt("From");
+        var y = prompt("To");
+        if (x != null && x != "") {
+            window.location.href = "/filterOnNum/" + attribute + "/" + x + "/" + y;
+        }
+    }
+</script>
+
+<body>
+    <div align="center">
+        <p>
+            <img
+                src="https://storage.googleapis.com/kaggle-datasets-images/85351/196980/3aafcf84fdf394e61f0ed379c73f4b36/dataset-cover.jpg?t=2018-12-01-19-35-02">
+            <h1>suicide rates overview 1985 to 2016</h1>
+        </p>
+    </div>
+    <hr />
+
+    <div align="right">
+        <button class="button" onclick="location.href = '{{ url_for('basic') }}';">Table</button>
+        <button class="button" onclick="location.href = '{{ url_for('description') }}';">Description</button>
+        <button class="button" onclick="location.href = '{{ url_for('about') }}';">About</button>
+    </div>
+
+    <div align="center">
+        <!-- Table goes in the document BODY -->
+        <table class="gridtable">
+            <thead>
+                <tr>
+                    <th> country
+                        <i class="fa fa-fw fa-sort-alpha-asc"
+                            onclick="window.location.href='{{ url_for('sort',attribute='country', reverse='False') }}';"></i>
+                        <i class="fa fa-fw fa-sort-alpha-desc"
+                            onclick="window.location.href='{{ url_for('sort',attribute='country', reverse='True') }}';"></i>
+                        <i class="fa fa-fw fa-filter" onclick="filterNonNumerical()"></i>
+                    </th>
+                    <th>year
+                        <i class="fa fa-fw fa-sort-amount-asc"
+                            onclick="window.location.href='{{ url_for('sort',attribute='year', reverse='False') }}';"></i>
+                        <i class="fa fa-fw fa-sort-amount-desc"
+                            onclick="window.location.href='{{ url_for('sort',attribute='year', reverse='True') }}';"></i>
+                        <i class="fa fa-fw fa-filter" onclick="filterNumerical('year')"></i>
+                    </th>
+                    <th> sex
+                        <i class="fa fa-fw fa-sort-alpha-asc"
+                            onclick="window.location.href='{{ url_for('sort',attribute='sex', reverse='False') }}';"></i>
+                        <i class="fa fa-fw fa-sort-alpha-desc"
+                            onclick="window.location.href='{{ url_for('sort',attribute='sex', reverse='True') }}';"></i>
+                    </th>
+                    <th>age</th>
+                    <th>suicides/100k pop
+                        <i class="fa fa-fw fa-sort-amount-asc"
+                            onclick="window.location.href='{{ url_for('sort',attribute='suicide rate', reverse='False') }}';"></i>
+                        <i class="fa fa-fw fa-sort-amount-desc"
+                            onclick="window.location.href='{{ url_for('sort',attribute='suicide rate', reverse='True') }}';"></i>
+                    </th>
+                    <th>gdp per capita
+                        <i class="fa fa-fw fa-sort-amount-asc"
+                            onclick="window.location.href='{{ url_for('sort',attribute='gdp per capita', reverse='False') }}';"></i>
+                        <i class="fa fa-fw fa-sort-amount-desc"
+                            onclick="window.location.href='{{ url_for('sort',attribute='gdp per capita', reverse='True') }}';"></i>
+                    </th>
+                    <th>generation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in data %}
+                <tr>
+                    <td>{{ entry.country }}</td>
+                    <td>{{ entry.year }}</td>
+                    <td>{{ entry.sex }}</td>
+                    <td>{{ entry.age }}</td>
+                    <td>{{ entry['suicide rate'] }}</td>
+                    <td>{{ entry['gdp per capita'] }}</td>
+                    <td>{{ entry.generation }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+</body>
